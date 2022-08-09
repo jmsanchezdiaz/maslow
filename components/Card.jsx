@@ -2,7 +2,7 @@ import React from 'react'
 
 const Card = ({ title, subtitle, multiplier, value, minValue, maxValue }) => {
   return (
-    <section className="shadow-lg p-4 rounded-md flex flex-col ">
+    <section className="shadow-lg p-4 gap-2 rounded-md flex flex-col justify-between ">
       <div className="flex justify-between align-middle">
         <div>
           <h2 className="font-semibold text-lg">{title.toUpperCase()}</h2>
@@ -12,6 +12,8 @@ const Card = ({ title, subtitle, multiplier, value, minValue, maxValue }) => {
         </div>
         <span className="font-semibold">{multiplier}x</span>
       </div>
+
+      <input min={minValue} max={maxValue} value={value} type="range" />
 
       <button
         className="w-5 h-5 self-end rounded-md"

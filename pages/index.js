@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Card from '../src/components/Card'
+import Card from '../components/Card'
 import { useState } from 'react'
 
 export default function Home() {
@@ -49,8 +49,8 @@ export default function Home() {
             <Card key={i + compesation.title} {...compesation} />
           ))}
         </main>
-        {/* <aside>
-          <section>
+        <aside>
+          <section className="shadow-lg space-y-2 p-4">
             <h2 className="font-semibold">Tu compensación:</h2>
             <h4 className="opacity-80 text-sm">
               Representación grafica de tu compensación:{' '}
@@ -68,7 +68,17 @@ export default function Home() {
               ))}
             </div>
           </section>
-        </aside> */}
+          <section className="shadow-lg space-y-2 p-4">
+            <div className="flex justify-between align-middle opacity-60">
+              <h4 className="text-md">Para distribuir</h4>
+              <span>ARS 72</span>
+            </div>
+            <div className="font-semibold flex justify-between align-middle">
+              <h4 className="text-md">Total</h4>
+              <span>ARS 3556</span>
+            </div>
+          </section>
+        </aside>
       </div>
     </div>
   )
