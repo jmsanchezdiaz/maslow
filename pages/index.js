@@ -1,40 +1,18 @@
 import Head from 'next/head'
-import Card from '../components/Card'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { VictoryPie } from 'victory-pie'
-import Modal from '../components/Modal'
+import { Card } from '../components'
+import { useCompensations } from '../context/CompensationsContext'
+
+const formatCompensationsToChart = (compensations) => {
+  return compensations.map((compensation) => ({
+    x: compensation.title,
+    y: compensation.value,
+  }))
+}
 
 export default function Home() {
-  const [amountOfMoney, setAmountOfMoney] = useState(50000)
-  const [compensations, setCompensations] = useState([
-    {
-      title: 'Sueldo base',
-      subtitle: 'Sueldo mensual',
-      value: 856,
-      minValue: 500,
-      maxValue: 2500,
-      multiplier: 2,
-      color: 'bg-emerald-400',
-    },
-    {
-      title: 'Puntos maslow',
-      subtitle: 'Puntos canjeables en marketplace',
-      value: 500,
-      minValue: 0,
-      maxValue: 1000,
-      multiplier: 1,
-      color: 'bg-sky-500',
-    },
-    {
-      title: 'Bono anual',
-      subtitle: null,
-      value: 2000,
-      minValue: 1000,
-      maxValue: 3000,
-      multiplier: 0.5,
-      color: 'bg-amber-500',
-    },
-  ])
+  const [{ compensations, amountOfMoney }] = useCompensations()
 
   const total = useMemo(() => {
     return compensations.reduce((acc, item) => {
@@ -43,7 +21,7 @@ export default function Home() {
   }, [compensations])
 
   return (
-    <div className="relative">
+    <div id="container" className="relative">
       <Head>
         <title>MASLOW Challenge</title>
         <meta
@@ -53,36 +31,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal>
-        <h2 className="text-xl font-semibold">Actualizar Compensación</h2>
-
-        <form action="">
-          <div>
-            <label htmlFor="compensation">Valor:</label>
-            <input
-              className="block"
-              type="number"
-              name="compensation"
-              min="0"
-              id="compensation"
-            />
-          </div>
-        </form>
-
-        <div className="space-x-2">
-          <button type="submit" className="btn btn-success">
-            Confirmar
-          </button>
-          <button type="button" className="btn btn-danger">
-            Cancelar
-          </button>
-        </div>
-      </Modal>
-
       <div>
         <main>
           {compensations?.map((compesation, i) => (
-            <Card key={i + compesation.title} {...compesation} />
+            <Card key={i + compesation.title} compensation={compesation} />
           ))}
         </main>
         <aside>
@@ -94,17 +46,14 @@ export default function Home() {
 
             <div className="max-w-sm">
               <VictoryPie
+                labels={({ datum }) => datum.y}
                 style={{
                   data: {
                     stroke: 'white',
                     strokeWidth: 2,
                   },
                 }}
-                data={[
-                  { x: 'Sueldo', y: 856 },
-                  { x: 'Puntos', y: 500 },
-                  { x: 'Bono', y: 2000 },
-                ]}
+                data={formatCompensationsToChart(compensations)}
                 colorScale={['#34D399', '#0EA5E9', '#F59E0B']}
               />
             </div>
