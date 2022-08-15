@@ -12,7 +12,7 @@ const formatCompensationsToChart = (compensations) => {
 }
 
 export default function Home() {
-  const [{ compensations, amountOfMoney }] = useCompensations()
+  const { compensations, amountOfMoney } = useCompensations()
 
   const total = useMemo(() => {
     return compensations.reduce((acc, item) => {

@@ -20,7 +20,18 @@ const Card = ({ compensation, onEdit }) => {
         </div>
         <span className="font-semibold">{multiplier}x</span>
       </div>
-      <input min={minValue} max={maxValue} value={value} type="range" />
+      <div className="flex gap-2 align-middle justify-between">
+        <span className="opacity-60 text-sm">{minValue}</span>
+        <input
+          className="flex-grow"
+          readOnly
+          min={minValue}
+          max={maxValue}
+          value={value}
+          type="range"
+        />
+        <span className="opacity-60 text-sm">{maxValue}</span>
+      </div>
       <button
         className="w-5 h-5 self-end rounded-md"
         aria-label="edit slider button"

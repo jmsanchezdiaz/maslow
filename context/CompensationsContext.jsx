@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 
-export const CompensationsContext = createContext([])
+export const CompensationsContext = createContext({})
 
 export const CompensationsProvider = ({ children }) => {
   const [amountOfMoney, setAmountOfMoney] = useState(50000)
@@ -43,10 +43,25 @@ export const CompensationsProvider = ({ children }) => {
   }
 
   const updateCompensation = (id, updatedValues) => {
+    if (amountOfMoney < updatedValues.value) return null
+
     setCompensations((previousState) =>
-      previousState.map((comp) =>
-        comp.id === id ? { ...comp, ...updatedValues } : comp,
-      ),
+      previousState.map((comp) => {
+        if (comp.id === id && comp.value !== updatedValues.value) {
+          setAmountOfMoney((previousValue) => {
+            if (updatedValues.value < comp.value) {
+              return previousValue + updatedValues.value * comp.multiplier
+            } else if (updatedValues.value > comp.value) {
+              return previousValue - updatedValues.value * comp.multiplier
+            }
+            return previousValue
+          })
+
+          return { ...comp, ...updatedValues }
+        }
+
+        return comp
+      }),
     )
   }
 
@@ -55,7 +70,7 @@ export const CompensationsProvider = ({ children }) => {
   }
 
   return (
-    <CompensationsContext.Provider value={[values, actions]}>
+    <CompensationsContext.Provider value={{ ...values, ...actions }}>
       {children}
     </CompensationsContext.Provider>
   )

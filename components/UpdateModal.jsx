@@ -3,16 +3,25 @@ import { useCompensations } from '../context/CompensationsContext'
 import { Modal } from './index'
 
 const UpdateModal = ({ compensation, isOpen, closeModal }) => {
-  const [, { updateCompensation }] = useCompensations()
+  const { updateCompensation } = useCompensations()
   const [currentValue, setCurrentValue] = useState(
     compensation.value.toString(),
   )
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    const currentValueInt = parseInt(currentValue)
+
+    if (
+      currentValueInt < compensation.minValue ||
+      currentValueInt > compensation.maxValue
+    )
+      return null
+
     updateCompensation(compensation.id, {
       ...compensation,
-      value: currentValue,
+      value: currentValueInt,
     })
     closeModal()
   }
