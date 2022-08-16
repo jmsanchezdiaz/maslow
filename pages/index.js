@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { useMemo } from 'react'
 import { VictoryPie } from 'victory-pie'
 import { Card } from '../components'
 import { useCompensations } from '../context/CompensationsContext'
@@ -12,13 +11,7 @@ const formatCompensationsToChart = (compensations) => {
 }
 
 export default function Home() {
-  const { compensations, amountOfMoney } = useCompensations()
-
-  const total = useMemo(() => {
-    return compensations.reduce((acc, item) => {
-      return acc + item.value
-    }, 0)
-  }, [compensations])
+  const { compensations, total, amountOfMoney } = useCompensations()
 
   return (
     <div id="container" className="relative">
@@ -59,12 +52,9 @@ export default function Home() {
             </div>
 
             <div className="space-y-2 ">
-              {compensations?.map(({ title, color, value }, i) => (
-                <div
-                  key={title + i}
-                  className="flex gap-2 justify-start align-middle"
-                >
-                  <span className={`p-2 w-5 h-5 ${color}`} />
+              {compensations?.map(({ title, color, value, id }, i) => (
+                <div key={id} className="flex gap-2">
+                  <div className={`w-4 h-4 bg-amber-500`}></div>
                   <h4 className="opacity-80 text-sm">
                     {title} ARS ${value}
                   </h4>

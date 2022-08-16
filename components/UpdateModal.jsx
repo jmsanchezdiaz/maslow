@@ -19,10 +19,7 @@ const UpdateModal = ({ compensation, isOpen, closeModal }) => {
     )
       return null
 
-    updateCompensation(compensation.id, {
-      ...compensation,
-      value: currentValueInt,
-    })
+    updateCompensation(compensation.id, value)
     closeModal()
   }
 
@@ -38,9 +35,10 @@ const UpdateModal = ({ compensation, isOpen, closeModal }) => {
             className="border-sky-400 border-b-4"
             type="number"
             name="compensation"
-            min="0"
             id="compensation"
             value={currentValue}
+            min={compensation.minValue}
+            max={compensation.maxValue}
           />
         </div>
         <div className="space-x-2">
