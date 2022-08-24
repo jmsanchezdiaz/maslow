@@ -1,20 +1,14 @@
 import Head from 'next/head'
-import { VictoryPie } from 'victory-pie'
-import { Card } from '../components'
+import { Card, ConfirmationModal, GraphicRepresentation } from '../components'
 import { useCompensations } from '../context/CompensationsContext'
-
-const formatCompensationsToChart = (compensations) => {
-  return compensations.map((compensation) => ({
-    x: compensation.title,
-    y: compensation.value,
-  }))
-}
+import useModal from '../hook/useModal'
 
 export default function Home() {
   const { compensations, total, amountOfMoney } = useCompensations()
+  const { isOpen, closeModal, openModal } = useModal(false)
 
   return (
-    <div id="container" className="relative">
+    <div id="container" className="relative p-4">
       <Head>
         <title>MASLOW Challenge</title>
         <meta
@@ -24,44 +18,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <main>
+      <div className="flex gap-4">
+        <main className="flex-1 flex flex-col gap-8">
           {compensations?.map((compesation, i) => (
             <Card key={i + compesation.title} compensation={compesation} />
           ))}
         </main>
-        <aside>
-          <section className="shadow-lg space-y-2 p-4">
-            <h2 className="font-semibold">Tu compensación:</h2>
-            <h4 className="opacity-80 text-sm">
-              Representación grafica de tu compensación:{' '}
-            </h4>
-
-            <div className="max-w-sm">
-              <VictoryPie
-                labels={({ datum }) => datum.y}
-                style={{
-                  data: {
-                    stroke: 'white',
-                    strokeWidth: 2,
-                  },
-                }}
-                data={formatCompensationsToChart(compensations)}
-                colorScale={['#34D399', '#0EA5E9', '#F59E0B']}
-              />
-            </div>
-
-            <div className="space-y-2 ">
-              {compensations?.map(({ title, color, value, id }, i) => (
-                <div key={id} className="flex gap-2">
-                  <div className={`w-4 h-4 bg-amber-500`}></div>
-                  <h4 className="opacity-80 text-sm">
-                    {title} ARS ${value}
-                  </h4>
-                </div>
-              ))}
-            </div>
-          </section>
+        <aside className="space-y-4">
+          <GraphicRepresentation compensations={compensations} />
           <section className="shadow-lg space-y-2 p-4">
             <div className="flex justify-between align-middle opacity-60">
               <h4 className="text-md">Para distribuir</h4>
@@ -72,9 +36,12 @@ export default function Home() {
               <span>ARS {total}</span>
             </div>
           </section>
-          <button className="btn btn-success">Enviar confirmación</button>
+          <button onClick={openModal} className="btn btn-success float-right">
+            Enviar confirmación
+          </button>
         </aside>
       </div>
+      <ConfirmationModal isOpen={isOpen} onClose={closeModal} />
     </div>
   )
 }

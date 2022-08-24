@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import UpdateModal from './UpdateModal'
+import React from 'react'
+import useModal from '../hook/useModal'
+import { UpdateModal } from './index'
+
 const Card = ({ compensation }) => {
   const { title, subtitle, multiplier, value, minValue, maxValue } =
     compensation
-  const [isOpen, setIsOpen] = useState(false)
-  const openModal = () => setIsOpen(true)
-  const closeModal = () => setIsOpen(false)
+  const { isOpen, closeModal, openModal } = useModal(false)
 
   return (
-    <section className="shadow-lg p-4 gap-2 rounded-md flex flex-col justify-between ">
+    <section className="shadow-lg p-8 gap-2 rounded-md flex flex-col justify-between ">
       <div className="flex justify-between align-middle">
         <div>
           <h2 className="font-semibold text-lg">{title.toUpperCase()}</h2>

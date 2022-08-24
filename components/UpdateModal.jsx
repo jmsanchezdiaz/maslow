@@ -19,7 +19,7 @@ const UpdateModal = ({ compensation, isOpen, closeModal }) => {
     )
       return null
 
-    updateCompensation(compensation.id, value)
+    updateCompensation(compensation.id, currentValueInt)
     closeModal()
   }
 

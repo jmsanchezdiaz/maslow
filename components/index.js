@@ -1,2 +1,5 @@
 export { default as Modal } from './Modal'
 export { default as Card } from './Card'
+export { default as ConfirmationModal } from './ConfirmationModal'
+export { default as UpdateModal } from './UpdateModal'
+export { default as GraphicRepresentation } from './GraphicRepresentation'
