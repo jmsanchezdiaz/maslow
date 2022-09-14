@@ -8,10 +8,19 @@ export const calculateTotal = (compensations) => {
   }, 0)
 }
 
-const bgColors = {
-  yellow: 'bg-amber-500',
-  green: 'bg-green-500',
-  blue: 'bg-sky-500',
+export const bgColors = {
+  'Sueldo base': {
+    utility: 'bg-green-500',
+    hexa: '#34D399',
+  },
+  'Puntos maslow': {
+    utility: 'bg-sky-500',
+    hexa: '#0EA5E9',
+  },
+  'Bono anual': {
+    utility: 'bg-amber-500',
+    hexa: '#F59E0B',
+  },
 }
 
 const initialCompensations = [
@@ -21,9 +30,8 @@ const initialCompensations = [
     subtitle: 'Sueldo mensual',
     value: 500,
     minValue: 500,
-    maxValue: 2500,
+    maxValue: 2000,
     multiplier: 2,
-    color: bgColors.green,
   },
   {
     id: 1,
@@ -33,7 +41,6 @@ const initialCompensations = [
     minValue: 0,
     maxValue: 1000,
     multiplier: 1,
-    color: bgColors.blue,
   },
   {
     id: 2,
@@ -43,7 +50,6 @@ const initialCompensations = [
     minValue: 1000,
     maxValue: 3000,
     multiplier: 0.5,
-    color: bgColors.yellow,
   },
 ]
 
@@ -56,7 +62,11 @@ export const CompensationsProvider = ({ children }) => {
     }, 0)
   }, [compensations])
 
-  const [amountOfMoney, setAmountOfMoney] = useState(3428 - total)
+  const maxValue = compensations.reduce(
+    (acc, item) => acc + (item.maxValue - item.minValue) * item.multiplier,
+    0,
+  )
+  const [amountOfMoney, setAmountOfMoney] = useState(maxValue - total)
 
   const resetCompensations = () => setCompensations(initialCompensations)
 
@@ -66,14 +76,10 @@ export const CompensationsProvider = ({ children }) => {
     setCompensations((previousState) =>
       previousState.map((comp) => {
         if (comp.id === id && comp.value !== value) {
-          setAmountOfMoney((previousValue) => {
-            if (value < comp.value) {
-              return previousValue + (comp.maxValue - value) / comp.multiplier
-            } else if (value > comp.value) {
-              return previousValue - value * comp.multiplier
-            }
-            return previousValue
-          })
+          const diff = Math.abs(comp.value - value)
+          if (comp.value > value) {
+            setAmountOfMoney(amountOfMoney + diff / comp.multiplier)
+          } else setAmountOfMoney(amountOfMoney - diff * comp.multiplier)
 
           return { ...comp, value }
         }

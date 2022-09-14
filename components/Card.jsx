@@ -1,11 +1,16 @@
 import React from 'react'
+import 'react-step-progress-bar/styles.css'
+import { ProgressBar, Step } from 'react-step-progress-bar'
 import useModal from '../hook/useModal'
 import { UpdateModal } from './index'
+import { bgColors } from '../context/CompensationsContext'
 
 const Card = ({ compensation }) => {
   const { title, subtitle, multiplier, value, minValue, maxValue } =
     compensation
   const { isOpen, closeModal, openModal } = useModal(false)
+  const midValue = (maxValue + minValue) / 2
+  const percentage = ((value - minValue) / (maxValue - minValue)) * 100
 
   return (
     <section className="shadow-lg p-8 gap-2 rounded-md flex flex-col justify-between ">
@@ -18,17 +23,54 @@ const Card = ({ compensation }) => {
         </div>
         <span className="font-semibold">{multiplier}x</span>
       </div>
-      <div className="flex gap-2 align-middle justify-between">
-        <span className="opacity-60 text-sm">{minValue}</span>
-        <input
-          className="flex-grow"
-          readOnly
-          min={minValue}
-          max={maxValue}
-          value={value}
-          type="range"
-        />
-        <span className="opacity-60 text-sm">{maxValue}</span>
+      <div className=" mb-6 p-2">
+        <ProgressBar
+          filledBackground={bgColors[title].hexa}
+          percent={percentage}
+        >
+          <Step>
+            {({ accomplished }) => (
+              <div className="flex justify-center">
+                <div
+                  className={`rotate-45 w-4 h-4 ${
+                    accomplished ? bgColors[title].utility : 'bg-gray-500'
+                  }`}
+                ></div>
+                <span className="absolute opacity-30 top-6  rotate-0">
+                  {minValue}
+                </span>
+              </div>
+            )}
+          </Step>
+          <Step>
+            {({ accomplished }) => (
+              <div className="flex justify-center">
+                <div
+                  className={`rotate-45 w-4 h-4 ${
+                    accomplished ? bgColors[title].utility : 'bg-gray-500'
+                  }`}
+                ></div>
+                <span className="absolute opacity-30 top-6  rotate-0">
+                  {midValue}
+                </span>
+              </div>
+            )}
+          </Step>
+          <Step>
+            {({ accomplished }) => (
+              <div className="flex justify-center">
+                <div
+                  className={`rotate-45 w-4 h-4 ${
+                    accomplished ? bgColors[title].utility : 'bg-gray-500'
+                  }`}
+                ></div>
+                <span className="absolute opacity-30 top-6 rotate-0">
+                  {maxValue}
+                </span>
+              </div>
+            )}
+          </Step>
+        </ProgressBar>
       </div>
       <button
         className="w-5 h-5 self-end rounded-md"

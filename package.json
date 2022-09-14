@@ -11,9 +11,12 @@
     "prettier": "npx prettier --write ."
   },
   "dependencies": {
+    "i": "^0.3.7",
     "next": "12.2.4",
+    "npm": "^8.19.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-step-progress-bar": "^1.0.3",
     "victory-pie": "^36.6.0"
   },
   "devDependencies": {

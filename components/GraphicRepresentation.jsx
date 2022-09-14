@@ -1,5 +1,6 @@
 import React from 'react'
 import { VictoryPie } from 'victory-pie'
+import { bgColors } from '../context/CompensationsContext'
 
 const formatCompensationsToChart = (compensations) => {
   return compensations.map((compensation) => ({
@@ -26,14 +27,14 @@ const GraphicRepresentation = ({ compensations }) => {
             },
           }}
           data={formatCompensationsToChart(compensations)}
-          colorScale={['#34D399', '#0EA5E9', '#F59E0B']}
+          colorScale={Object.values(bgColors).map(({ hexa }) => hexa)}
         />
       </div>
 
       <div className="space-y-2 ">
-        {compensations?.map(({ title, color, value, id }, i) => (
+        {compensations?.map(({ title, value, id }) => (
           <div key={id} className="flex gap-2">
-            <div className={`w-4 h-4 ${color}`}></div>
+            <div className={`w-4 h-4 ${bgColors[title].utility}`}></div>
             <h4 className="opacity-80 text-sm">
               {title} ARS ${value}
             </h4>
