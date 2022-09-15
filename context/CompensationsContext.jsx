@@ -63,7 +63,7 @@ export const CompensationsProvider = ({ children }) => {
   }, [compensations])
 
   const maxValue = compensations.reduce(
-    (acc, item) => acc + (item.maxValue - item.minValue) * item.multiplier,
+    (acc, item) => acc + (item.maxValue - item.minValue),
     0,
   )
   const [amountOfMoney, setAmountOfMoney] = useState(maxValue - total)
@@ -71,8 +71,6 @@ export const CompensationsProvider = ({ children }) => {
   const resetCompensations = () => setCompensations(initialCompensations)
 
   const updateCompensation = (id, value) => {
-    if (amountOfMoney < value) return null
-
     setCompensations((previousState) =>
       previousState.map((comp) => {
         if (comp.id === id && comp.value !== value) {

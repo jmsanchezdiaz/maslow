@@ -29,7 +29,9 @@ export default function Home() {
           <section className="shadow-lg space-y-2 p-4">
             <div className="flex justify-between align-middle opacity-60">
               <h4 className="text-md">Para distribuir</h4>
-              <span>ARS {amountOfMoney}</span>
+              <span style={{ color: amountOfMoney < 0 ? 'red' : 'black' }}>
+                ARS {amountOfMoney}
+              </span>
             </div>
             <div className="font-semibold flex justify-between align-middle">
               <h4 className="text-md">Total</h4>
